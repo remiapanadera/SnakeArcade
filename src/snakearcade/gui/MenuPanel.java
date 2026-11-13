@@ -6,7 +6,10 @@ import java.awt.*;
 
 public class MenuPanel extends JPanel {
 
-    public MenuPanel(Runnable playAction) {
+    public MenuPanel(
+            Runnable classicAction,
+            Runnable timedAction
+    ) {
 
         setBackground(new Color(10, 25, 15));
         setLayout(new GridBagLayout());
@@ -24,25 +27,44 @@ public class MenuPanel extends JPanel {
         add(title, gbc);
 
         // Subtitle
-        JLabel subtitle = new JLabel("Classic Snake Game");
+        JLabel subtitle = new JLabel("SELECT YOUR GAME MODE");
         subtitle.setFont(new Font("Arial", Font.PLAIN, 18));
         subtitle.setForeground(Color.WHITE);
 
         gbc.gridy = 1;
         add(subtitle, gbc);
 
-        // Play button
-        JButton playButton = new JButton("PLAY");
-        playButton.setFont(new Font("Arial", Font.BOLD, 22));
-        playButton.setForeground(Color.BLACK);
-        playButton.setBackground(new Color(57, 255, 20));
-        playButton.setFocusPainted(false);
-        playButton.setPreferredSize(new Dimension(180, 50));
+        // Classic Mode button
+        JButton classicButton = new JButton("CLASSIC MODE");
+        styleButton(classicButton);
 
-        playButton.addActionListener(e -> playAction.run());
+        classicButton.addActionListener(
+                e -> classicAction.run()
+        );
 
         gbc.gridy = 2;
-        gbc.insets = new Insets(35, 0, 12, 0);
-        add(playButton, gbc);
+        gbc.insets = new Insets(30, 0, 12, 0);
+        add(classicButton, gbc);
+
+        // Timed Mode button
+        JButton timedButton = new JButton("TIMED MODE");
+        styleButton(timedButton);
+
+        timedButton.addActionListener(
+                e -> timedAction.run()
+        );
+
+        gbc.gridy = 3;
+        gbc.insets = new Insets(12, 0, 12, 0);
+        add(timedButton, gbc);
+    }
+
+    private void styleButton(JButton button) {
+
+        button.setFont(new Font("Arial", Font.BOLD, 20));
+        button.setForeground(Color.BLACK);
+        button.setBackground(new Color(57, 255, 20));
+        button.setFocusPainted(false);
+        button.setPreferredSize(new Dimension(220, 50));
     }
 }
