@@ -1,0 +1,9 @@
+
+package snakearcade.interfaces;
+
+import java.io.IOException;
+
+public interface Saveable {
+
+    void save() throws IOException;
+}
