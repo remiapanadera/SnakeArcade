@@ -14,6 +14,7 @@ public class GameWindow extends JFrame {
 
     private GameController game;
     private GamePanel gamePanel;
+    private GameOverPanel gameOverPanel;
     private Timer timer;
 
     private CardLayout cardLayout;
@@ -30,8 +31,11 @@ public class GameWindow extends JFrame {
         mainContainer = new JPanel(cardLayout);
 
         // Create screens
-        MenuPanel menuPanel = new MenuPanel(this::startGameFromMenu);
-        gamePanel = new GamePanel(game, this::restartGame);
+        MenuPanel menuPanel =
+                new MenuPanel(this::startGameFromMenu);
+
+        gamePanel =
+                new GamePanel(game, this::restartGame);
 
         // Add screens
         mainContainer.add(menuPanel, "MENU");
@@ -48,6 +52,7 @@ public class GameWindow extends JFrame {
 
                     if (game.isGameOver()) {
                         timer.stop();
+                        showGameOverScreen();
                     }
                 }
         );
@@ -61,19 +66,54 @@ public class GameWindow extends JFrame {
     }
 
     private void startGameFromMenu() {
+
         game.startGame();
+
         cardLayout.show(mainContainer, "GAME");
+
         timer.start();
         gamePanel.repaint();
     }
 
     private void restartGame() {
+
         game.startGame();
+
         timer.start();
         gamePanel.repaint();
+
+        cardLayout.show(mainContainer, "GAME");
+    }
+
+    private void showGameOverScreen() {
+
+        // Create Game Over screen using final score
+        gameOverPanel = new GameOverPanel(
+                game.getScore(),
+                this::restartGame,
+                this::returnToMenu
+        );
+
+        // Add the new screen
+        mainContainer.add(gameOverPanel, "GAME_OVER");
+
+        // Display it
+        cardLayout.show(mainContainer, "GAME_OVER");
+
+        // Refresh layout
+        mainContainer.revalidate();
+        mainContainer.repaint();
+    }
+
+    private void returnToMenu() {
+
+        timer.stop();
+
+        cardLayout.show(mainContainer, "MENU");
     }
 
     public static void main(String[] args) {
+
         SwingUtilities.invokeLater(() -> {
             new GameWindow();
         });
