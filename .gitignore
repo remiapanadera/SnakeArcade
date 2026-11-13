@@ -1,0 +1,9 @@
+
+# Compiled Java files
+*.class
+
+# Compiled output folder
+out/
+
+# IDE files
+.vscode/
